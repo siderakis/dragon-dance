@@ -6,10 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 object VariableCaseConverters {
-  def hyphenWords: (String) => String = words => words.replace(" ", "-")
+  def hyphenWords: (String) => String = words => words.toLowerCase.trim.replace(" ", "-")
 
 
-  val camelifyWords: String => String = words => camelifyMethod(words.toLowerCase.replaceAll(" ", "_"))
+  val camelifyWords: String => String = words => camelifyMethod(words.trim.toLowerCase.replaceAll(" ", "_"))
 
 
   /**

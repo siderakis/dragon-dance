@@ -17,22 +17,26 @@ object DragonDance extends Commands with Robotic {
   val typer = new Keyboard(robot)
 
   val sendCamel = send(VariableCaseConverters.camelifyWords) _
+  val sendCamelCap = send(VariableCaseConverters.camelify) _
   val sendHyphen = send(VariableCaseConverters.hyphenWords) _
 
   def dispatch(command: String): Unit = command match {
     case "copy-line" => tripleClick - copy
     case "paste-here" => click - paste
-    case "camel" => DynamicDictationDispatcher(sendCamel)
+    //    case "camel" => DynamicDictationDispatcher(sendCamel)
     case "exit" => print("exiting...")
     case "click" => click
-    case _ => println(s"unknown command '$command'")
+    case complex => command.span(_ != ' ') match {
+      case ("camel-method", text) => sendCamel(text)
+      case ("camel-class", text) => sendCamelCap(text)
+      case ("hyphen", text) => sendHyphen(text)
+    }
   }
-
 
   def send(f: (String) => String)(dictatedText: String) {
     val processed = f(dictatedText)
     println(s"sending $dictatedText as $processed.")
-    switchWindow()
+    //switchWindow()
     typer `type` processed
   }
 
